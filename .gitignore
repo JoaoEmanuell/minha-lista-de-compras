@@ -10,3 +10,4 @@ __pycache__/
 static/
 node_modules/
 ts_compile_js/
+*.db
