@@ -11,3 +11,4 @@ static/
 node_modules/
 ts_compile_js/
 *.db
+Backlog.md
