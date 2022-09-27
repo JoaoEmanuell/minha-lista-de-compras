@@ -2,6 +2,7 @@
 - [Requirements](#requirements)
 - [Project structure](#project-structure)
 - [Routes](#routes)
+- [Database](#database)
 - [Run](#run)
 
 # Start
@@ -18,7 +19,11 @@ This documentation servers to teach how requirements, project structure, underst
 
 # Routes
 
-[Click here to access documentation on project routes](./routes.md)
+[Click here to access documentation on routes](./routes.md)
+
+# Database
+
+[Click here to access documentation on the database](./database.md)
 
 # Run
 
