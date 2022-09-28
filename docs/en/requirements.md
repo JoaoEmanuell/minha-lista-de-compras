@@ -57,6 +57,17 @@ Install requirements.txt
 
     pip install -r requirements.txt
 
+To run the **tests** you must create a symbolic link to the folder
+**minha-lista-de-compras**, if it is not created the tests cannot be executed.
+
+Linux:
+
+    ln -s minha-lista-de-compras mlc
+
+Windows:
+
+    mklink minha-lista-de-compras mlc
+
 This way the environment is already configured.
 
 [Return](./README.md)
