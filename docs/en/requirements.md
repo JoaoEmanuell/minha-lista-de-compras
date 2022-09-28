@@ -68,6 +68,12 @@ Windows:
 
     mklink minha-lista-de-compras mlc
 
+**Note:**
+
+The entire **tests** path is configured as being in the **tests** folder, so the tests are run as follows:
+
+    pytest path_to_test/test.py
+
 This way the environment is already configured.
 
 [Return](./README.md)
