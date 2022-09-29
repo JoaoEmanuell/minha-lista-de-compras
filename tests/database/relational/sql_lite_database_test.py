@@ -5,6 +5,7 @@ from sys import path
 path.append('..')
 
 from mlc.source import sql_lite as sql_lite_global
+from mlc.source import UserModel
 
 def test_answer():
     absolute_path = Path().absolute()
@@ -13,5 +14,11 @@ def test_answer():
     sql_lite = sql_lite_global
 
     # Create connection
-    sql_lite.create_connection(path_to_db)
+    connection = sql_lite.create_connection(path_to_db)
     assert exists(path_to_db)
+
+    # Model
+
+    data = {'username': 'test', 'password': 'test'}
+    result = sql_lite.insert_one(UserModel, data, connection)
+    assert result == True

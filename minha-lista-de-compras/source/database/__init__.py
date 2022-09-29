@@ -1,1 +1,1 @@
-from .relational import sql_lite
+from .relational import sql_lite, UserModel

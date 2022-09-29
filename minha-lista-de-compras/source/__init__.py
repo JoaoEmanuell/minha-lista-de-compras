@@ -1,1 +1,1 @@
-from .database import sql_lite
+from .database import sql_lite, UserModel

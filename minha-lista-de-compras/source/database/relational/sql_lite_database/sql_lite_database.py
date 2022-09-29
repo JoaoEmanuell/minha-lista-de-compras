@@ -25,9 +25,13 @@ class SQLiteDatabase(SQLiteDatabaseInterface):
         if connection == None:
             connection = self.__connection
         
-        model.objects.backend = connection
-        result = model(data)
-        result.save()
+        try:
+            model.objects.backend = connection
+            result = model(data)
+            result.save()
+            return True
+        except:
+            return False
 
     def delete_one(self, id: str = None, model: Type[Model] = None, connection: Type[Database] = None) -> bool:
         pass
