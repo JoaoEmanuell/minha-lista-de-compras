@@ -15,15 +15,14 @@ class SQLiteDatabase(SQLiteDatabaseInterface):
             return Database(f'{database_path}.db')
         return Database(database_path)
 
-    def select(self, model: Type[Model] = None, connection: Type[Database] = None, **data) -> List[Dict[str, Any]]:
+    def select(self, model: Type[Model]=None, connection: Type[Database]=None, **data) -> List[Dict[str, Any]]:
         pass
 
-    def update_one(self, id: str = None, model: Type[Model] = None, data: Dict[str, Any] = None, connection: Type[Database] = None) -> bool:
+    def update_one(self, id: int=None, model: Type[Model]=None, data: Dict[str, Any]=None, connection: Type[Database]=None) -> bool:
         pass
 
-    def insert_one(self, model: Type[Model] = None, data: Dict[str, Any] = None, connection: Type[Database] = None) -> bool:
-        if connection == None:
-            connection = self.__connection
+    def insert_one(self, model: Type[Model]=None, data: Dict[str, Any]=None, connection: Type[Database]=None) -> bool:
+        connection = self.private__check_connection(connection)
         
         try:
             model.objects.backend = connection
@@ -33,5 +32,24 @@ class SQLiteDatabase(SQLiteDatabaseInterface):
         except:
             return False
 
-    def delete_one(self, id: str = None, model: Type[Model] = None, connection: Type[Database] = None) -> bool:
-        pass
+    def delete_one(self, id: int=None, model: Type[Model]=None, connection: Type[Database]=None) -> bool:
+        connection = self.private__check_connection(connection)
+
+        try:
+            model.objects.backend = connection
+            data = model.objects.all()
+            for row in data:
+                if row['id'] == id:
+                    print(f'Deleting {id}')
+                    model.objects.get(pk=id).delete()
+                    return True
+
+            return False
+        except Exception as error:
+            print(error.with_traceback())
+            return False
+
+    def private__check_connection(self, connection: Type[Database]) -> Type[Database]:
+        if connection == None:
+            connection = self.__connection
+        return connection

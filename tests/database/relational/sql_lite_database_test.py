@@ -19,6 +19,13 @@ def test_answer():
 
     # Model
 
-    data = {'username': 'test', 'password': 'test'}
+    data = {'id': 1, 'username': 'test', 'password': 'test'}
     result = sql_lite.insert_one(UserModel, data, connection)
     assert result == True
+
+    # Delete
+    id = data['id']
+    result = sql_lite.delete_one(id, UserModel, connection)
+    assert result == True
+
+test_answer()
