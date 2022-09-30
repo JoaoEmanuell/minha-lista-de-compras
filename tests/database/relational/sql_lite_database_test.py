@@ -10,6 +10,7 @@ from mlc.source import UserModel
 def test_answer():
     absolute_path = Path().absolute()
     path_to_db = join(absolute_path, 'database.db')
+    id = 1
 
     sql_lite = sql_lite_global
 
@@ -19,12 +20,18 @@ def test_answer():
 
     # Model
 
-    data = {'id': 1, 'username': 'test', 'password': 'test'}
+    data = {'id': id, 'username': 'test', 'password': 'test'}
     result = sql_lite.insert_one(UserModel, data, connection)
     assert result == True
 
+    # Update
+
+    data = {'username': 'test2', 'password': 'test2'}
+    result = sql_lite.update_one(id, UserModel, data, connection)
+    assert result == True
+
     # Delete
-    id = data['id']
+    
     result = sql_lite.delete_one(id, UserModel, connection)
     assert result == True
 

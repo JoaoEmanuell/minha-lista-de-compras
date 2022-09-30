@@ -1,4 +1,3 @@
-from inspect import Attribute
 from typing import List, Dict, Any, Type
 from pathlib import Path
 from os.path import join
@@ -20,7 +19,21 @@ class SQLiteDatabase(SQLiteDatabaseInterface):
         pass
 
     def update_one(self, id: int=None, model: Type[Model]=None, data: Dict[str, Any]=None, connection: Type[Database]=None) -> bool:
-        pass
+        connection = self.private__check_connection(connection)
+
+        try: 
+            old_data: dict = model.objects.get(pk=id)
+            new_data = old_data.copy()
+
+            for key, value in data.items():
+                new_data[key] = value
+            
+            self.delete_one(id, model, connection)
+            self.insert_one(model, new_data, connection)
+            return True
+
+        except:
+            return False
 
     def insert_one(self, model: Type[Model]=None, data: Dict[str, Any]=None, connection: Type[Database]=None) -> bool:
         connection = self.private__check_connection(connection)
@@ -44,7 +57,8 @@ class SQLiteDatabase(SQLiteDatabaseInterface):
             print(error.with_traceback())
             return False
 
-    def private__check_connection(self, connection: Type[Database]) -> Type[Database]:
+    def private__check_connection(self, connection: Type[Database]) \
+        -> Type[Database]:
         if connection == None:
             connection = self.__connection
         return connection
