@@ -1,3 +1,4 @@
+from inspect import Attribute
 from typing import List, Dict, Any, Type
 from pathlib import Path
 from os.path import join
@@ -36,16 +37,10 @@ class SQLiteDatabase(SQLiteDatabaseInterface):
         connection = self.private__check_connection(connection)
 
         try:
-            model.objects.backend = connection
-            data = model.objects.all()
-            for row in data:
-                if row['id'] == id:
-                    print(f'Deleting {id}')
-                    model.objects.get(pk=id).delete()
-                    return True
+            model.objects.get(pk=id).delete()
+            return True
 
-            return False
-        except Exception as error:
+        except (Exception, AttributeError) as error:
             print(error.with_traceback())
             return False
 
