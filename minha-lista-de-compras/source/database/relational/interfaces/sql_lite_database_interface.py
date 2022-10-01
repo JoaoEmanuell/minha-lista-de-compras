@@ -11,7 +11,7 @@ class SQLiteDatabaseInterface(DatabaseInterface):
         raise NotImplementedError()
 
     @abstractmethod
-    def select(self, model: Type[Model]=None, connection: Type[Database]=None, **data) -> List[Dict[str, Any]]:
+    def select(self, model: Type[Model]=None, connection: Type[Database]=None, fields: List[str]=[], where:Dict[str, Any]=None) -> List[Dict[str, Any]]:
         raise NotImplementedError()
 
     @abstractmethod
