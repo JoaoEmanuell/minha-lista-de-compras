@@ -18,7 +18,7 @@ def test_answer():
     connection = sql_lite.create_connection(path_to_db)
     assert exists(path_to_db)
 
-    # Model
+    # Insert
 
     data = {'id': id, 'username': 'test', 'password': 'test'}
     result = sql_lite.insert_one(UserModel, data, connection)
@@ -30,9 +30,44 @@ def test_answer():
     result = sql_lite.update_one(id, UserModel, data, connection)
     assert result == True
 
+    # Select
+    ## Valid select
+    where = {'username': 'test2'}
+    fields = '*'
+    result = sql_lite.select(UserModel, connection, fields, where)
+    assert result == [{'id': 1, 'username': 'test2', 'password': 'test2'}]
+
+    ## Invalid select
+    where = {'username': 'test'}
+    result = sql_lite.select(UserModel, connection, fields, where)
+    assert result == []
+
+    ## Sql injection
+    where = {'id': '105 OR 1=1'}
+    result = sql_lite.select(UserModel, connection, fields, where)
+    assert result == []
+
+    ## No where
+    result = sql_lite.select(UserModel, connection, fields)
+    assert result == [{'id': 1, 'username': 'test2', 'password': 'test2'}]
+
+    ## No fields
+    result = sql_lite.select(UserModel, connection)
+    assert result == []
+
+    ## No connection
+    result = sql_lite.select(UserModel)
+    assert result == []
+
+    ## No model
+    result = sql_lite.select()
+    assert result == []
+
     # Delete
-    
+    ## Valid delete
     result = sql_lite.delete_one(id, UserModel, connection)
     assert result == True
-
-test_answer()
+    
+    ## Invalid delete
+    result = sql_lite.delete_one(model=UserModel, connection=connection)
+    assert result == False
