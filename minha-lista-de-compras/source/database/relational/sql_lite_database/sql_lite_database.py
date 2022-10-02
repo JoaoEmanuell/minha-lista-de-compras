@@ -1,4 +1,4 @@
-from typing import List, Dict, Any, Type
+from typing import List, Dict, Any, Tuple, Type, Union
 from pathlib import Path
 from os.path import join
 from orm_sqlite import Model, Database
@@ -15,13 +15,64 @@ class SQLiteDatabase(SQLiteDatabaseInterface):
             return Database(f'{database_path}.db')
         return Database(database_path)
 
-    def select(self, model: Type[Model]=None, connection: Type[Database]=None, **data) -> List[Dict[str, Any]]:
-        pass
+    def select(self, model: Type[Model]=..., connection: Type[Database]=..., fields: List[str]=None, where: Dict[str, Any]=None) -> Union[List[Dict[str, Any]], list]:
+        
+        try:
+            connection = self.private__check_connection(connection)
+            model.objects.backend = connection
+            full_data: List[dict] = model.objects.all()
 
-    def update_one(self, id: int=None, model: Type[Model]=None, data: Dict[str, Any]=None, connection: Type[Database]=None) -> bool:
-        connection = self.private__check_connection(connection)
+            # Validations
+            if fields == None: # no fields
+                raise Exception("Empty fields")
 
+            if where == None: # no where
+                return full_data
+    
+            if type(fields) != list:
+                fields = [fields]
+            
+            available_dicts_tuple: Tuple[dict] = ()
+            where_size = len(where)
+            
+            # Select ... from Model where...
+
+            for full_data_dict in full_data:
+                count_where_in_dict = 0
+                for key, value in full_data_dict.items():
+                    if key in where:
+                        if value == where[key]:
+                            count_where_in_dict += 1
+                if count_where_in_dict == where_size:
+                    available_dicts_tuple += (full_data_dict, )
+
+            # Filter fields
+
+            if fields == ['*']: # all
+                return [*available_dicts_tuple]
+            
+            fields_dict_tuple: Tuple[dict] = ()
+
+            for available_dict in available_dicts_tuple:
+                fields_dict_list: List[dict] = []
+                for field in fields:
+                    if field in available_dict: # Take only available fields
+                        fields_dict_list.append({field: available_dict[field]})
+
+                fields_dict_tuple = (
+                    {key: value for _dict in fields_dict_list for key, value in _dict.items()}, 
+                ) # Transform all dicts present in fields_dict_list in single dict and add to tuple
+
+            return [*fields_dict_tuple]
+
+        except:
+            return []
+
+    def update_one(self, id: int=..., model: Type[Model]=..., data: Dict[str, Any]=..., connection: Type[Database]=...) -> bool:
+        
         try: 
+            connection = self.private__check_connection(connection)
+            model.objects.backend = connection
             old_data: dict = model.objects.get(pk=id)
             new_data = old_data.copy()
 
@@ -35,10 +86,10 @@ class SQLiteDatabase(SQLiteDatabaseInterface):
         except:
             return False
 
-    def insert_one(self, model: Type[Model]=None, data: Dict[str, Any]=None, connection: Type[Database]=None) -> bool:
-        connection = self.private__check_connection(connection)
+    def insert_one(self, model: Type[Model]=..., data: Dict[str, Any]=..., connection: Type[Database]=...) -> bool:
         
         try:
+            connection = self.private__check_connection(connection)
             model.objects.backend = connection
             result = model(data)
             result.save()
@@ -46,15 +97,18 @@ class SQLiteDatabase(SQLiteDatabaseInterface):
         except:
             return False
 
-    def delete_one(self, id: int=None, model: Type[Model]=None, connection: Type[Database]=None) -> bool:
-        connection = self.private__check_connection(connection)
-
+    def delete_one(self, id: int=None, model: Type[Model]=..., connection: Type[Database]=...) -> bool:
         try:
+            if type(id) != int:
+                raise Exception
+
+            id = abs(id)
+            connection = self.private__check_connection(connection)
+            model.objects.backend = connection
             model.objects.get(pk=id).delete()
             return True
 
-        except (Exception, AttributeError) as error:
-            print(error.with_traceback())
+        except:
             return False
 
     def private__check_connection(self, connection: Type[Database]) \
