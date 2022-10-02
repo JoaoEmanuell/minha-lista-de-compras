@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Type, List, Dict, Any, Dict
+from typing import Type, List, Dict, Any, Dict, Union
 
 from orm_sqlite import Database, Model
 
@@ -11,7 +11,7 @@ class SQLiteDatabaseInterface(DatabaseInterface):
         raise NotImplementedError()
 
     @abstractmethod
-    def select(self, model: Type[Model]=None, connection: Type[Database]=None, fields: List[str]=[], where:Dict[str, Any]=None) -> List[Dict[str, Any]]:
+    def select(self, model: Type[Model]=None, connection: Type[Database]=None, fields: List[str]=[], where:Dict[str, Any]=None) -> Union[List[Dict[str, Any]], list]:
         raise NotImplementedError()
 
     @abstractmethod
