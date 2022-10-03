@@ -20,15 +20,26 @@ def test_answer():
 
     # Insert
 
+    ## Valid insert
     data = {'id': id, 'username': 'test', 'password': 'test'}
     result = sql_lite.insert_one(UserModel, data, connection)
     assert result == True
 
+    ## Invalid insert
+    data_invalid = {'username': 'test'}
+    result = sql_lite.insert_one(UserModel, data_invalid, connection)
+    assert result == False
+
     # Update
 
+    ## Valid update
     data = {'username': 'test2', 'password': 'test2'}
     result = sql_lite.update_one(id, UserModel, data, connection)
     assert result == True
+
+    ## Invalid update
+    result = sql_lite.update_one(id, UserModel, data_invalid, connection)
+    assert result == False
 
     # Select
     ## Valid select

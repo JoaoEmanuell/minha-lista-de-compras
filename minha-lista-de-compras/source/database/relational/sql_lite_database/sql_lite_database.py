@@ -15,7 +15,9 @@ class SQLiteDatabase(SQLiteDatabaseInterface):
             return Database(f'{database_path}.db')
         return Database(database_path)
 
-    def select(self, model: Type[Model]=..., connection: Type[Database]=..., fields: List[str]=None, where: Dict[str, Any]=None) -> Union[List[Dict[str, Any]], list]:
+    def select(self, model: Type[Model]=..., connection: Type[Database]=..., \
+        fields: List[str]=None, where: Dict[str, Any]=None) \
+            -> Union[List[Dict[str, Any]], list]:
         
         try:
             connection = self.private__check_connection(connection)
@@ -60,33 +62,33 @@ class SQLiteDatabase(SQLiteDatabaseInterface):
                         fields_dict_list.append({field: available_dict[field]})
 
                 fields_dict_tuple = (
-                    {key: value for _dict in fields_dict_list for key, value in _dict.items()}, 
-                ) # Transform all dicts present in fields_dict_list in single dict and add to tuple
+                    {
+                        key: value \
+                        for _dict in fields_dict_list \
+                            for key, value in _dict.items()
+                    }, 
+                ) # Transform all dicts present in fields_dict_list in single
+                  # dict and add to tuple
 
             return [*fields_dict_tuple]
 
         except:
             return []
 
-    def update_one(self, id: int=..., model: Type[Model]=..., data: Dict[str, Any]=..., connection: Type[Database]=...) -> bool:
+    def update_one(self, id: int=..., model: Type[Model]=..., \
+        data: Dict[str, Any]=..., connection: Type[Database]=...) -> bool:
         
         try: 
             connection = self.private__check_connection(connection)
             model.objects.backend = connection
-            old_data: dict = model.objects.get(pk=id)
-            new_data = old_data.copy()
-
-            for key, value in data.items():
-                new_data[key] = value
-            
-            self.delete_one(id, model, connection)
-            self.insert_one(model, new_data, connection)
+            model({'id': id, **data}).update()
             return True
 
         except:
             return False
 
-    def insert_one(self, model: Type[Model]=..., data: Dict[str, Any]=..., connection: Type[Database]=...) -> bool:
+    def insert_one(self, model: Type[Model]=..., data: Dict[str, Any]=..., \
+        connection: Type[Database]=...) -> bool:
         
         try:
             connection = self.private__check_connection(connection)
@@ -97,7 +99,8 @@ class SQLiteDatabase(SQLiteDatabaseInterface):
         except:
             return False
 
-    def delete_one(self, id: int=None, model: Type[Model]=..., connection: Type[Database]=...) -> bool:
+    def delete_one(self, id: int=None, model: Type[Model]=..., \
+        connection: Type[Database]=...) -> bool:
         try:
             if type(id) != int:
                 raise Exception
