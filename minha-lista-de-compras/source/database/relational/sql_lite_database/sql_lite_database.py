@@ -22,7 +22,7 @@ class SQLiteDatabase(SQLiteDatabaseInterface):
         try:
             connection = self.private__check_connection(connection)
             model.objects.backend = connection
-            full_data: List[dict] = model.objects.all()
+            full_data: List[dict]=model.objects.all()
 
             # Validations
             if fields == None: # no fields
@@ -34,7 +34,7 @@ class SQLiteDatabase(SQLiteDatabaseInterface):
             if type(fields) != list:
                 fields = [fields]
             
-            available_dicts_tuple: Tuple[dict] = ()
+            available_dicts_tuple: Tuple[dict]=()
             where_size = len(where)
             
             # Select ... from Model where...
@@ -53,22 +53,16 @@ class SQLiteDatabase(SQLiteDatabaseInterface):
             if fields == ['*']: # all
                 return [*available_dicts_tuple]
             
-            fields_dict_tuple: Tuple[dict] = ()
+            fields_dict_tuple: Tuple[dict]=()
 
             for available_dict in available_dicts_tuple:
-                fields_dict_list: List[dict] = []
+                fields_dict: Dict[str, Any]={}
+
                 for field in fields:
                     if field in available_dict: # Take only available fields
-                        fields_dict_list.append({field: available_dict[field]})
+                        fields_dict[field]= available_dict[field]
 
-                fields_dict_tuple = (
-                    {
-                        key: value \
-                        for _dict in fields_dict_list \
-                            for key, value in _dict.items()
-                    }, 
-                ) # Transform all dicts present in fields_dict_list in single
-                  # dict and add to tuple
+                fields_dict_tuple += (fields_dict, )
 
             return [*fields_dict_tuple]
 

@@ -48,6 +48,11 @@ def test_answer():
     result = sql_lite.select(UserModel, connection, fields, where)
     assert result == [{'id': 1, 'username': 'test2', 'password': 'test2'}]
 
+    ## Valid select with fields
+    fields = 'username'
+    result = sql_lite.select(UserModel, connection, fields, where)
+    assert result == [{'username': 'test2'}]
+
     ## Invalid select
     where = {'username': 'test'}
     result = sql_lite.select(UserModel, connection, fields, where)
