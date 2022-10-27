@@ -10,7 +10,7 @@ __pycache__/
 static/
 node_modules/
 ts_compile_js/
-Backlog.md
-mlc
 *.db
-minha-lista-de-compras
+Backlog.md
+.pytest_cache/
+mlc

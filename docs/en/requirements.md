@@ -1,11 +1,32 @@
 - [Requirements](#requirements)
+  - [Docker](#docker)
   - [Node](#node)
     - [Scripts](#scripts)
   - [Python](#python)
 
 # Requirements
 
-As this project requires Node version v15.14.0 or higher and Python 3.10.7 higher installed.
+As this project requires Node version v19.10.0 and Python 3.11.0 installed.
+
+    node==19.10.0
+    python==3.11.0
+
+Or if you want to use docker, which is more recommended, in that case install docker and docker-compose
+
+    docker=>20.10.12
+    docker-compose=>1.25.0
+
+If you want to use only docker, [click here](#docker)
+
+If you didn't want to use docker, [click here](#node)
+
+## Docker
+
+Build the image
+
+     docker-compose build
+
+This way the environment is already configured.
 
 ## Node
 

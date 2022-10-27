@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+    web:
+        build: .
+        ports:
+            - '8080:8080'
+        volumes:
+            - .:/home/pn/app
+        entrypoint: [ 'bash', '-c', 'bash ./run.sh' ]

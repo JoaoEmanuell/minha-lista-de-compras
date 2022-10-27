@@ -1,10 +1,25 @@
 - [Running the project](#running-the-project)
+  - [Docker](#docker)
   - [Server](#server)
   - [Compiled the static files](#compiled-the-static-files)
 
 # Running the project
 
 Once everything has been installed and configured correctly [Read Requirements](./requirements.md) if you haven't installed the requirements.
+
+## Docker
+
+Write the command:
+
+    docker-compose up
+
+With that the server will be running.
+
+**TIP:**
+
+If you want to open the shell in the container, use the following command
+
+    docker exec -it minha-lista-de-compras_web_1 sh
 
 ## Server
 

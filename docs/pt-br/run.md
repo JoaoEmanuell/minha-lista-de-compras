@@ -1,10 +1,25 @@
 - [Rodando o projeto](#rodando-o-projeto)
+  - [Docker](#docker)
   - [Servidor](#servidor)
   - [Compilado os arquivos estáticos](#compilado-os-arquivos-estáticos)
 
 # Rodando o projeto
 
 Uma vez que tudo foi instalado e configurado corretamente [Leia Requerimentos](./requirements.md) caso não tenha instalado os requerimentos.
+
+## Docker
+
+Digite o comando:
+
+    docker-compose up
+
+Com isso o servidor já estará rodando.
+
+**DICA:**
+
+Caso queira abrir o shell no container, utilize o seguinte comando
+
+    docker exec -it minha-lista-de-compras_web_1 sh
 
 ## Servidor
 
