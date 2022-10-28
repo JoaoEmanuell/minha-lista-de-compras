@@ -11,6 +11,7 @@ $pip install -r requirements.txt
 ## Pytest
 
 ln -s minha-lista-de-compras mlc
+cp .env tests/
 
 ## Env
 
