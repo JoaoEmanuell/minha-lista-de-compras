@@ -8,6 +8,8 @@ services:
         environment:
             MONGO_ROOT_USERNAME: '${MONGO_ROOT_USERNAME}'
             MONGO_ROOT_PASSWORD: '${MONGO_ROOT_PASSWORD}'
+        volumes:
+            - ./mongo_volume:/data/db
         restart: always
     web:
         build: .
