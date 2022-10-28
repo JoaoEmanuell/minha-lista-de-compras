@@ -1,4 +1,5 @@
 - [Requerimentos](#requerimentos)
+  - [Arquivo env](#arquivo-env)
   - [Docker](#docker)
   - [Node](#node)
     - [Scripts](#scripts)
@@ -6,12 +7,16 @@
 
 # Requerimentos
 
+Antes de começar qualquer coisa [clique aqui](#arquivo-env) para aprender a 
+configurar o **.env**
+
 Como esse projeto requer o Node versão v19.10.0 e o Python 3.11.0 instalado.
 
     node==19.10.0
     python==3.11.0
 
-Ou caso queira utilizar o docker, o que é mais recomendado, nesse caso instale o docker e o docker-compose
+Ou caso queira utilizar o docker, o que é mais recomendado, nesse caso instale 
+o docker e o docker-compose
 
     docker=>20.10.12
     docker-compose=>1.25.0
@@ -19,6 +24,21 @@ Ou caso queira utilizar o docker, o que é mais recomendado, nesse caso instale 
 Caso queira utilizar apenas o docker, [clique aqui](#docker)
 
 Caso não queria utilizar o docker, [clique aqui](#node)
+
+## Arquivo env
+
+O arquivo env é responsável pelas variáveis de ambiente.
+
+Crie um arquivo chamado de **.env** na raiz do projeto, após isso copie os 
+dados de **env_example** para ele.
+
+Substitua os valores após cada **=**
+
+    MONGO_ROOT_USERNAME=mongo root username # Mongo root username
+    MONGO_ROOT_PASSWORD=mongo root password # Mongo root password
+
+    MONGO_ROOT_USERNAME=root
+    MONGO_ROOT_PASSWORD=example
 
 ## Docker
 

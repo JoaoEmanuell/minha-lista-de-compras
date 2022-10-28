@@ -1,4 +1,5 @@
 - [Requirements](#requirements)
+  - [Env file](#env-file)
   - [Docker](#docker)
   - [Node](#node)
     - [Scripts](#scripts)
@@ -6,12 +7,16 @@
 
 # Requirements
 
+Before you start anything [click here](#env-file) to learn how to
+configure **.env**
+
 As this project requires Node version v19.10.0 and Python 3.11.0 installed.
 
     node==19.10.0
     python==3.11.0
 
-Or if you want to use docker, which is more recommended, in that case install docker and docker-compose
+Or if you want to use docker, which is more recommended, in that case install
+docker and docker-compose
 
     docker=>20.10.12
     docker-compose=>1.25.0
@@ -19,6 +24,21 @@ Or if you want to use docker, which is more recommended, in that case install do
 If you want to use only docker, [click here](#docker)
 
 If you didn't want to use docker, [click here](#node)
+
+## Env file
+
+The env file is responsible for the environment variables.
+
+Create a file called **.env** in the project root, after that copy the
+data from **env_example** to it.
+
+Substitute the values after each **=**
+
+     MONGO_ROOT_USERNAME=mongo root username # Mongo root username
+     MONGO_ROOT_PASSWORD=mongo root password # Mongo root password
+
+     MONGO_ROOT_USERNAME=root
+     MONGO_ROOT_PASSWORD=example
 
 ## Docker
 
