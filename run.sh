@@ -12,6 +12,10 @@ $pip install -r requirements.txt
 
 ln -s minha-lista-de-compras mlc
 
+## Env
+
+cp .env minha-lista-de-compras/
+
 # Node
 
 $npm install
