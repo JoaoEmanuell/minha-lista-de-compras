@@ -8,8 +8,8 @@ load_dotenv()
 
 mongo = MongoDatabase(
     database_name='minha-lista-de-compras',
-    host='127.0.0.1',
-    port=27017,
+    host=env['MONGO_HOST'],
+    port=int(env['MONGO_PORT']),
     username=env['MONGO_ROOT_USERNAME'],
     password=env['MONGO_ROOT_PASSWORD']
 )
