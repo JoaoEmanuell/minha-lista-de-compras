@@ -1,4 +1,4 @@
 MONGO_ROOT_USERNAME=mongo root username # Mongo root username
 MONGO_ROOT_PASSWORD=mongo root password # Mongo root password
-MONGO_HOST=mongo host # Mongo host; Default: 127.0.0.1
+MONGO_HOST=mongo host # Mongo host; Default: mongo
 MONGO_PORT=mongo port # Mongo port; Default: 27017
