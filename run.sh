@@ -11,11 +11,11 @@ $pip install -r requirements.txt
 ## Pytest
 
 ln -s minha-lista-de-compras mlc
-cp .env tests/
 
 ## Env
 
-cp .env minha-lista-de-compras/
+ln -s .env minha-lista-de-compras/.env
+ls -s .env tests/.env
 
 # Node
 
