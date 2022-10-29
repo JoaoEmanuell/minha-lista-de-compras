@@ -3,20 +3,25 @@ version: '3.7'
 services:
     mongo:
         image: 'mongo:latest'
+        ports:
+            - '27017:27017'
         env_file:
-            - '.env'
+            - .env
         environment:
-            MONGO_ROOT_USERNAME: '${MONGO_ROOT_USERNAME}'
-            MONGO_ROOT_PASSWORD: '${MONGO_ROOT_PASSWORD}'
+            MONGO_INITDB_ROOT_USERNAME: '${MONGO_ROOT_USERNAME}'
+            MONGO_INITDB_ROOT_PASSWORD: '${MONGO_ROOT_PASSWORD}'
         volumes:
             - ./mongo_volume:/data/db
         restart: always
     web:
         build: .
+        depends_on:
+            - 'mongo'
         ports:
             - '8080:8080'
         volumes:
             - .:/home/pn/app
         env_file:
             - '.env'
+        restart: always
         entrypoint: [ 'bash', '-c', 'bash ./run.sh' ]
