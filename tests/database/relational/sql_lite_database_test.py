@@ -4,15 +4,15 @@ from os.path import join, exists
 from sys import path
 path.append('..')
 
-from mlc.source import sql_lite as sql_lite_global
-from mlc.source import UserModel
+from mlc.source import UserModel, Factory, SQLiteDatabaseInterface
 
 def test_answer():
     absolute_path = Path().absolute()
     path_to_db = join(absolute_path, 'database.db')
     id = 1
 
-    sql_lite = sql_lite_global
+    sql_lite: SQLiteDatabaseInterface \
+        = Factory().get_representative(SQLiteDatabaseInterface) # Object
 
     # Create connection
     connection = sql_lite.create_connection(path_to_db)

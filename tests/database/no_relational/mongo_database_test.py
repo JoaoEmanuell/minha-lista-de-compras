@@ -1,10 +1,12 @@
 from sys import path
 path.append('..')
 
-from mlc.source import mongo, ListModel
+from mlc.source import ListModel, Factory, MongoDatabaseInterface
 
 def test_answer():
     id_user = 1
+    mongo: MongoDatabaseInterface = \
+        Factory().get_representative(MongoDatabaseInterface) # Object
 
     # Insert
     ## Valid
