@@ -14,8 +14,12 @@ ln -s minha-lista-de-compras mlc
 
 ## Env
 
-ln -s .env minha-lista-de-compras/.env
-ls -s .env tests/.env
+cd minha-lista-de-compras
+ln -s ../env .env
+cd ..
+cd tests
+ln -s ../.env .env
+cd ..
 
 # Node
 
