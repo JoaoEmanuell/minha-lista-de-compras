@@ -8,7 +8,7 @@ from ..interfaces import MongoDatabaseInterface
 class MongoDatabase(MongoDatabaseInterface):
     def __init__(self, database_name: str = None, host: str = None, port: int = None, username: str = None, password: str = None) -> None:
         connect(
-            database_name,
+            db=database_name,
             host=host,
             port=int(port),
             username=username,
@@ -19,7 +19,8 @@ class MongoDatabase(MongoDatabaseInterface):
         try:
             model(**data).save()
             return True
-        except:
+        except Exception as err:
+            print(err)
             return False
 
     def select(self, model: Type[Document], data: Dict[str, Any]) -> Union[List[Dict[str, Any]], list]:
