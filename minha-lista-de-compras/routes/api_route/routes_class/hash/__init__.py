@@ -1,0 +1,1 @@
+from .hash_class import Hash
