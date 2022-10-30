@@ -26,6 +26,10 @@ entender sobre o funcionamento das rotas, como rodar o projeto.
 
 [Clique aqui para acessar a documentação sobre a base da dados](./database.md)
 
+# Api
+
+[Clique aqui para acessar a documentação sobre a api](./api.md)
+
 # Rodando o projeto
 
 [Clique aqui para acessar a documentação sobre como rodar o projeto](./run.md)

@@ -3,6 +3,7 @@
 - [Project structure](#project-structure)
 - [Routes](#routes)
 - [Database](#database)
+- [Api](#api)
 - [Run](#run)
 
 # Start
@@ -24,6 +25,9 @@ This documentation servers to teach how requirements, project structure, underst
 # Database
 
 [Click here to access documentation on the database](./database.md)
+
+# Api
+[Click here to access documentation on the api](./api.md)
 
 # Run
 
