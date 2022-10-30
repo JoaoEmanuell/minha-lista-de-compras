@@ -5,6 +5,7 @@ from mlc.source import ListModel, Factory, MongoDatabaseInterface
 
 def test_answer():
     id_user = 1
+    list_name = 'Test List'
     mongo: MongoDatabaseInterface = \
         Factory().get_representative(MongoDatabaseInterface) # Object
 
@@ -13,6 +14,7 @@ def test_answer():
 
     data = {
         'id_user': id_user,
+        'list_name': list_name,
         'data': ['1', '2', '3']
     }
     result = mongo.insert_one(ListModel, data)
