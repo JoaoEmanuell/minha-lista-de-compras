@@ -1,1 +1,2 @@
 from .api_route_interface import ApiRouteInterface
+from .encrypt_interface import EncryptInterface
