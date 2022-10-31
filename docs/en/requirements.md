@@ -40,6 +40,11 @@ Substitute the values after each **=**
      MONGO_ROOT_USERNAME=root
      MONGO_ROOT_PASSWORD=example
 
+Also generate an encryption key, just run the **new_fernet_key.py** file
+located in **minha-lista-de-compras/utils**, copy the generated key and the
+put it inside the key **ENCRYPTION_KEY** in the .env, this process must be done
+regardless of whether you run the project using Docker or without it.
+
 ## Docker
 
 Build the image
