@@ -18,7 +18,9 @@ class Encrypt(EncryptInterface):
 
         for string in data_tuple:
             encrypt_data += (
-                self.__fernet.encrypt(string.encode(self.__encode)), 
+                self.__fernet.encrypt(
+                    self.pr__encode_string(string)
+                ).decode(self.__encode), 
             )
         
         return [*encrypt_data]
@@ -29,7 +31,13 @@ class Encrypt(EncryptInterface):
 
         for string in data_tuple:
             decrypt_data += (
-                self.__fernet.decrypt(string).decode(self.__encode), 
+                self.__fernet.decrypt(
+                    self.pr__encode_string(string)
+                ).decode(self.__encode), 
             )
         
         return [*decrypt_data]
+
+    def pr__encode_string(self, string: str) -> bytes:
+        # Private method to transform string in byte string
+        return string.encode(self.__encode)
