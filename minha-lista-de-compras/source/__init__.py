@@ -5,5 +5,6 @@ from .database import (
     SQLiteDatabaseInterface
 )
 from .hash import HashInterface
+from .encrypt import EncryptInterface
 
 from .factory import Factory

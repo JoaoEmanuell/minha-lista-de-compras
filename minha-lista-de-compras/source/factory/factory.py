@@ -5,6 +5,7 @@ from .interfaces import FactoryInterface
 
 from ..database import mongo, sql_lite
 from ..hash import Hash
+from ..encrypt import Encrypt
 
 class Factory(FactoryInterface):
     def __init__(self) -> None:
@@ -12,6 +13,7 @@ class Factory(FactoryInterface):
             mongo, 
             sql_lite,
             Hash,
+            Encrypt,
         )
 
     def get_representative(self, interface: Type[ABC]) \
