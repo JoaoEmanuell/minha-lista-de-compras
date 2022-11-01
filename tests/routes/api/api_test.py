@@ -2,9 +2,14 @@ from os import environ as env
 from json import dump
 
 from requests import get, post
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def test_answer():
     api_url = 'http://127.0.0.1:8080/api'
+    API_TOKEN = env['API_TOKEN']
+    ENCRYPTION_KEY = env['ENCRYPTION_KEY']
     
     # Index
 
@@ -59,20 +64,73 @@ def test_answer():
 
     # Encrypt
 
-    ENCRYPTION_KEY = env['ENCRYPTION_KEY']
+    ## Valid
 
     encrypt_url = f'{api_url}/encrypt'
     data = {
+        'token': API_TOKEN,
         'key': ENCRYPTION_KEY,
         'data': ['test', 'text', 'text2']
     }
+    encrypt_valid_response = post(
+        url=f'{encrypt_url}/encrypt', 
+        json=data
+    ).json()
+    assert type(encrypt_valid_response) == dict
+    assert type(encrypt_valid_response['encrypted_data']) == list
+    assert len(encrypt_valid_response['encrypted_data']) == 3
+
+    ## Invalid
+
+    ### Token
+    data['token'] = 'foo'
     response = post(
         url=f'{encrypt_url}/encrypt', 
         json=data
     ).json()
-    assert type(response) == dict
-    assert type(response['encrypted_data']) == list
-    assert len(response['encrypted_data']) == 3
+    assert response == {'error': 'Invalid token'}
 
-    '''response = post(f'{encrypt_url}/decrypt').json()
-    assert response == {'route': 'decrypt_route'}'''
+    ### Key
+    data['token'] = API_TOKEN
+    data['key'] = 'foo'
+    response = post(
+        url=f'{encrypt_url}/encrypt', 
+        json=data
+    ).json()
+    assert response == {'error': 'Invalid Encrypt Key'}
+    
+    # Decrypt
+    
+    ## Valid
+
+    data = {
+        'token': API_TOKEN,
+        'key': ENCRYPTION_KEY,
+        'data': encrypt_valid_response['encrypted_data']
+    }
+    response = post(
+        url=f'{encrypt_url}/decrypt',
+        json=data
+    ).json()
+    assert type(response) == dict
+    assert len(response['decrypted_data']) == 3
+    assert response['decrypted_data'] == ['test', 'text', 'text2']
+
+    ## Invalid
+
+    ### Token
+    data['token'] = 'foo'
+    response = post(
+        url=f'{encrypt_url}/decrypt', 
+        json=data
+    ).json()
+    assert response == {'error': 'Invalid token'}
+
+    ### Key
+    data['token'] = API_TOKEN
+    data['key'] = 'foo'
+    response = post(
+        url=f'{encrypt_url}/decrypt', 
+        json=data
+    ).json()
+    assert response == {'error': 'Invalid Encrypt Key'}
