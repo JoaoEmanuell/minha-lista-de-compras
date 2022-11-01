@@ -1,3 +1,6 @@
+from os import environ as env
+from json import dump
+
 from requests import get, post
 
 def test_answer():
@@ -20,7 +23,7 @@ def test_answer():
     data = {'text': 'Hello World'}
     response = post(
         url=new_hash_url,
-        data=data
+        json=data
     ).json()
     assert type(response) == dict
     assert response['hash'][0:10] == 'a591a6d40b'
@@ -30,9 +33,9 @@ def test_answer():
     invalid_data = {'hash': 'Hello World'}
     response = post(
         url=new_hash_url,
-        data=invalid_data
+        json=invalid_data
     ).json()
-    assert response['hash'] == 'Error Invalid query parameter'
+    assert response['hash'] == 'Invalid Key'
 
     ## Compare
 
@@ -42,7 +45,7 @@ def test_answer():
     data['hash'] = full_hash
     response = post(
         url=compare_hash_url,
-        data=data
+        json=data
     ).json()
     assert type(response) == dict
     assert response['equal'] == True
@@ -50,6 +53,26 @@ def test_answer():
     ### Invalid
     response = post(
         url=compare_hash_url,
-        data=invalid_data
+        json=invalid_data
     ).json()
-    assert response['equal'] == False
+    assert response['equal'] == 'Invalid Key'
+
+    # Encrypt
+
+    ENCRYPTION_KEY = env['ENCRYPTION_KEY']
+
+    encrypt_url = f'{api_url}/encrypt'
+    data = {
+        'key': ENCRYPTION_KEY,
+        'data': ['test', 'text', 'text2']
+    }
+    response = post(
+        url=f'{encrypt_url}/encrypt', 
+        json=data
+    ).json()
+    assert type(response) == dict
+    assert type(response['encrypted_data']) == list
+    assert len(response['encrypted_data']) == 3
+
+    '''response = post(f'{encrypt_url}/decrypt').json()
+    assert response == {'route': 'decrypt_route'}'''
