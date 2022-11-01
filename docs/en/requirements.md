@@ -45,6 +45,9 @@ located in **minha-lista-de-compras/utils**, copy the generated key and the
 put it inside the key **ENCRYPTION_KEY** in the .env, this process must be done
 regardless of whether you run the project using Docker or without it.
 
+Do the same process for the api token, this time the file is
+**new_api_token.py**, add to **API_TOKEN**
+
 ## Docker
 
 Build the image

@@ -45,6 +45,9 @@ localizado em **minha-lista-de-compras/utils**, copie a chave gerada e a
 coloque dentro da key **ENCRYPTION_KEY** no .env, esse processo deve ser feito 
 independentemente de você rodar o projeto usando o Docker ou sem ele.
 
+Faça o mesmo processo para o token da api, dessa vez o arquivo é 
+**new_api_token.py**, adicione a **API_TOKEN**
+
 ## Docker
 
 Faça a build da imagem

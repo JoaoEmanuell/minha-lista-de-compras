@@ -103,6 +103,7 @@ Descrição:
 Parâmetros:
 
     {
+        'token': 'token para uso da api',
         'key': 'chave de criptografia, gerada pelo servidor',
         'data': ['Dados para criptografar']
     }
@@ -126,6 +127,7 @@ Descrição:
 Parâmetros:
 
     {
+        'token': 'token para uso da api',
         'key': 'chave de criptografia, gerada pelo servidor',
         'data': ['Dados criptografados']
     }
