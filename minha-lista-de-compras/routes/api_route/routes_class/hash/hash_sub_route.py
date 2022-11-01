@@ -2,7 +2,9 @@ from flask import Blueprint, jsonify, request
 
 hash_sub_route = Blueprint('hash', __name__)
 
-from .hash_class import Hash
+from source import Factory, HashInterface # root dir
+
+hash: HashInterface = Factory().get_representative(HashInterface)
 
 @hash_sub_route.route('/new_hash', methods=['POST'])
 def new_hash():
@@ -11,7 +13,7 @@ def new_hash():
             data = {
                 'text': request.form.get('text', type=str)
             }
-            value = Hash().generate_hash(data['text'])
+            value = hash().generate_hash(data['text'])
             return jsonify({'hash': value})
         except KeyError:
             return jsonify({'hash' : 'Invalid Key'})
@@ -26,7 +28,7 @@ def compare_hash():
                 'text': request.form.get('text', type=str),
                 'hash': request.form.get('hash', type=str)
             }
-            compare = Hash().compare_hash(data['text'], data['hash'])
+            compare = hash().compare_hash(data['text'], data['hash'])
             return jsonify({'equal': compare})
         except KeyError:
             return jsonify({'hash' : 'Invalid Key'})
