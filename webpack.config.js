@@ -1,7 +1,7 @@
 const resolve = require('path').resolve
 
 const app_name = 'minha-lista-de-compras'
-const path_to_static = resolve(__dirname, app_name, 'static')
+const path_to_static = resolve(__dirname, app_name, 'mlc', 'static')
 const path_to_ts_compile_js = resolve(__dirname, app_name, 'ts_compile_js')
 
 module.exports = {
