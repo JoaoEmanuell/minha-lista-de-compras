@@ -19,6 +19,7 @@ ln -s ../env .env
 cd ..
 cd tests
 ln -s ../.env .env
+ln -s ../minha-lista-de-compras/config.py config.py
 cd ..
 
 # Node
