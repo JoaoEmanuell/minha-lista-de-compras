@@ -8,10 +8,24 @@ from flask_login import LoginManager
 app = Flask(__name__)
 app.config.from_object('config')
 
-# sqlalchemy
+# Login manager
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+# Sqlalchemy
 
 sql_db = SQLAlchemy(app)
 migrate = Migrate(app, sql_db)
 
-login_manager = LoginManager()
-login_manager.init_app(app)
+# Models
+
+from .source import (UserModel, ListModel, MongoDatabaseInterface, Factory,
+DatabaseInterface, SQLiteDatabaseInterface)
+from .routes import user
+
+with app.app_context():
+    sql_db.create_all()
+
+# Blueprints
+app.register_blueprint(user, url_prefix='/user')
