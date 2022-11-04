@@ -1,7 +1,11 @@
 from typing import Any
 
-from mlc_dir import sql_db as db
-from mlc_dir import login_manager
+try:
+    from mlc_dir import sql_db as db
+    from mlc_dir import login_manager
+except ImportError: # Used by tests
+    from .......mlc_dir import sql_db as db # type:ignore
+    from .......mlc_dir import login_manager
 
 @login_manager.user_loader
 def load_user(user_id: str) -> Any:
