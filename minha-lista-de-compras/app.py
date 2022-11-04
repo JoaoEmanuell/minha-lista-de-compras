@@ -1,15 +1,4 @@
-from flask import Flask, redirect
+from .mlc import app
 
-# Routes
-
-from routes import user
-
-app = Flask(__name__)
-
-# Blueprints
-
-app.register_blueprint(user, url_prefix='/user')
-
-@app.route('/')
-def index():
-    return redirect('/user')
+if __name__ == '__main__':
+    app.run(debug=True)
