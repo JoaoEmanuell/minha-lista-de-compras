@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Type, List, Dict, Any, Dict, Union
+from typing import List, Dict, Any, Dict, Union
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_sqlalchemy.model import Model
@@ -10,7 +10,9 @@ class SQLiteDatabaseInterface(DatabaseInterface):
     """Sql lite database interface"""
 
     @abstractmethod
-    def select(self, connection: SQLAlchemy=None, model: Model=None, fields: List[str]=[], where:Dict[str, Any]=None) -> Union[List[Dict[str, Any]], list]:
+    def select(self, connection: SQLAlchemy=None, model: Model=None, \
+        fields: List[str]=[], where:Dict[str, Any]=None) -> \
+            Union[List[Dict[str, Any]], list]:
         """Select [fields] in [model] [where]
 
         Args:
@@ -25,7 +27,8 @@ class SQLiteDatabaseInterface(DatabaseInterface):
         raise NotImplementedError()
 
     @abstractmethod
-    def update_one(self, id: int=None, connection: SQLAlchemy=None, model: Model=None, data: Dict[str, Any]=None) -> bool:
+    def update_one(self, connection: SQLAlchemy=None, id: int=None, \
+        model: Model=None, data: Dict[str, Any]=None) -> bool:
         """Update [model] set [data] where [id = id]
 
         Args:
@@ -40,7 +43,8 @@ class SQLiteDatabaseInterface(DatabaseInterface):
         raise NotImplementedError()
 
     @abstractmethod
-    def insert_one(self, model: Model=None, connection: SQLAlchemy=None, data: Dict[str, Any]=None) -> bool:
+    def insert_one(self, connection: SQLAlchemy=None, model: Model=None, \
+        data: Dict[str, Any]=None) -> bool:
         """insert into [model] values [data]
 
         Args:
@@ -54,7 +58,8 @@ class SQLiteDatabaseInterface(DatabaseInterface):
         raise NotImplementedError()
 
     @abstractmethod
-    def delete_one(self, id: int=None, connection: SQLAlchemy=None, model: Model=None) -> bool:
+    def delete_one(self, connection: SQLAlchemy=None, id: int=None, \
+        model: Model=None) -> bool:
         """delete from [model] where [id = id]
 
         Args:
