@@ -1,115 +1,98 @@
-from typing import List, Dict, Any, Tuple, Type, Union
-from pathlib import Path
-from os.path import join
-from orm_sqlite import Model, Database
+from typing import List, Dict, Any, Union
+
+from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy.query import Query
+from flask_sqlalchemy.model import Model
+from sqlalchemy import MetaData
 
 from ..interfaces import SQLiteDatabaseInterface
 
 class SQLiteDatabase(SQLiteDatabaseInterface):
     def __init__(self) -> None:
-        path = join(Path().absolute(), 'database.db')
-        self.__connection = self.create_connection(path)
+        pass
 
-    def create_connection(self, database_path: str) -> Type[Database]:
-        if not database_path.endswith('db'):
-            return Database(f'{database_path}.db')
-        return Database(database_path)
-
-    def select(self, model: Type[Model]=..., connection: Type[Database]=..., \
-        fields: List[str]=None, where: Dict[str, Any]=None) \
-            -> Union[List[Dict[str, Any]], list]:
+    def select(self, connection: SQLAlchemy=None, model: Model=None, \
+        fields: List[str]=[], where:Dict[str, Any]=None) -> \
+            Union[List[List[Dict[str, Any]]], list]:
         
         try:
-            connection = self.private__check_connection(connection)
-            model.objects.backend = connection
-            full_data: List[dict]=model.objects.all()
+            result = []
 
-            # Validations
-            if fields == None: # no fields
-                raise Exception("Empty fields")
+            if fields == None : fields = ('*', ) # type: ignore
 
-            if where == None: # no where
-                return full_data
-    
-            if type(fields) != list:
-                fields = [fields]
+            if type(fields) != list or type(fields) != tuple:
+                fields = (fields, )
+           
+            query: Query = connection.session.query(model)
+
+            for key, value in where.items():
+                query = query.filter(getattr(model, key) == value)
+
+            result = self.private__transform_select_in_list(query)
+            print(f'Result: {result}')
+            if fields != ('*', ):
+
+                print(f"Select fields {fields[0]}")
+                result_tmp = []
+
+                for list_with_list_dict in result:
+                    list_with_dict = list_with_list_dict[0]
+                    tmp_dict_result = {}
+                    for key, value in list_with_dict.items():
+                        if key in fields[0]:
+                            tmp_dict_result[key] = value
+                    result_tmp.append([tmp_dict_result])
+                result = result_tmp
             
-            available_dicts_tuple: Tuple[dict]=()
-            where_size = len(where)
-            
-            # Select ... from Model where...
-
-            for full_data_dict in full_data:
-                count_where_in_dict = 0
-                for key, value in full_data_dict.items():
-                    if key in where:
-                        if value == where[key]:
-                            count_where_in_dict += 1
-                if count_where_in_dict == where_size:
-                    available_dicts_tuple += (full_data_dict, )
-
-            # Filter fields
-
-            if fields == ['*']: # all
-                return [*available_dicts_tuple]
-            
-            fields_dict_tuple: Tuple[dict]=()
-
-            for available_dict in available_dicts_tuple:
-                fields_dict: Dict[str, Any]={}
-
-                for field in fields:
-                    if field in available_dict: # Take only available fields
-                        fields_dict[field]= available_dict[field]
-
-                fields_dict_tuple += (fields_dict, )
-
-            return [*fields_dict_tuple]
-
-        except:
+            print(f'result : {result}')
+            return result
+                
+        except Exception as err:
+            print(f'Error: {err}')
             return []
 
-    def update_one(self, id: int=..., model: Type[Model]=..., \
-        data: Dict[str, Any]=..., connection: Type[Database]=...) -> bool:
-        
-        try: 
-            connection = self.private__check_connection(connection)
-            model.objects.backend = connection
-            model({'id': id, **data}).update()
-            return True
-
-        except:
-            return False
-
-    def insert_one(self, model: Type[Model]=..., data: Dict[str, Any]=..., \
-        connection: Type[Database]=...) -> bool:
+    def update_one(self, connection: SQLAlchemy=None, id: int=None, model: Model=None, \
+        data: Dict[str, Any]=None) -> bool:
         
         try:
-            connection = self.private__check_connection(connection)
-            model.objects.backend = connection
-            result = model(data)
-            result.save()
+            model.query.filter_by(id=id).update(data)
+            connection.session.commit()
             return True
-        except:
+        except Exception as err:
+            print(err)
             return False
 
-    def delete_one(self, id: int=None, model: Type[Model]=..., \
-        connection: Type[Database]=...) -> bool:
+    def insert_one(self, connection: SQLAlchemy=None, model: Model=None, \
+        data: Dict[str, Any]=None) -> bool:
+
         try:
-            if type(id) != int:
-                raise Exception
-
-            id = abs(id)
-            connection = self.private__check_connection(connection)
-            model.objects.backend = connection
-            model.objects.get(pk=id).delete()
+            new_data = model(**data)
+            connection.session.add(new_data)
+            connection.session.commit()
             return True
-
-        except:
+        except Exception as err:
+            print(err)
             return False
 
-    def private__check_connection(self, connection: Type[Database]) \
-        -> Type[Database]:
-        if connection == None:
-            connection = self.__connection
-        return connection
+    def delete_one(self, connection: SQLAlchemy=None, id: int=None, \
+        model: Model=None) -> bool:
+
+        pass
+
+    def private__transform_select_in_list(self, query: Query) \
+        -> List[List[Dict[str, Any]]]:
+
+        result_list: List[Dict[str, Any]] = [u.__dict__ for u in query.all()]
+
+        new_result_list = []
+
+        for res_list in result_list:
+            tmp_dict = {}
+            for key, value in res_list.items():
+                if key == '_sa_instance_state':
+                    pass
+                else:
+                    tmp_dict[key] = value
+            new_result_list.append([tmp_dict])
+
+        return new_result_list

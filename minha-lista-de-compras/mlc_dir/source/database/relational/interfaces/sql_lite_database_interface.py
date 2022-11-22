@@ -12,7 +12,7 @@ class SQLiteDatabaseInterface(DatabaseInterface):
     @abstractmethod
     def select(self, connection: SQLAlchemy=None, model: Model=None, \
         fields: List[str]=[], where:Dict[str, Any]=None) -> \
-            Union[List[Dict[str, Any]], list]:
+            Union[List[List[Dict[str, Any]]], list]:
         """Select [fields] in [model] [where]
 
         Args:
