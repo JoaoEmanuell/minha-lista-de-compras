@@ -35,14 +35,14 @@ class SQLiteDatabase(SQLiteDatabaseInterface):
                     query = query.filter(getattr(model, key) == value)
             else:
                 query = query
-                print(f'Query: {query}')
+                print(f"Query: {query}")
 
             result = self.private__transform_select_in_list(query)
             print(f"Result: {result}")
             if fields != ("*",):
 
                 print(f"Select fields {fields[0]}")
-                
+
                 result = self.private__select_fields(fields[0], result)
 
             print(f"result : {result}")
@@ -91,7 +91,14 @@ class SQLiteDatabase(SQLiteDatabaseInterface):
         self, connection: SQLAlchemy = None, id: int = None, model: Model = None
     ) -> bool:
 
-        pass
+        try:
+            user = model.query.filter_by(id=id).first()
+            connection.session.delete(user)
+            connection.session.commit()
+            return True
+        except Exception as err:
+            print(f"Delete error: {err}")
+            return False
 
     def private__transform_select_in_list(
         self, query: Query
