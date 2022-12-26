@@ -7,9 +7,9 @@ from .mongo_database import MongoDatabase
 load_dotenv()
 
 mongo = MongoDatabase(
-    database_name='minha-lista-de-compras',
-    host=env['MONGO_HOST'],
-    port=int(env['MONGO_PORT']),
-    username=env['MONGO_ROOT_USERNAME'],
-    password=env['MONGO_ROOT_PASSWORD']
+    database_name="minha-lista-de-compras",
+    host=env["MONGO_HOST"],
+    port=int(env["MONGO_PORT"]),
+    username=env["MONGO_ROOT_USERNAME"],
+    password=env["MONGO_ROOT_PASSWORD"],
 )

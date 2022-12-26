@@ -1,11 +1,13 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
+
 class DatabaseInterface(ABC):
-    """ Base interface for all databases class"""
+    """Base interface for all databases class"""
+
     @abstractmethod
     def __init__(self) -> None:
-        """Init"""        
+        """Init"""
         raise NotImplementedError()
 
     @abstractmethod

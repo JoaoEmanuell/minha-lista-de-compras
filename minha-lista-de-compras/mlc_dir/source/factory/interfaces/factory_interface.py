@@ -1,9 +1,10 @@
 from abc import ABC, abstractmethod
 from typing import Type, Union
 
+
 class FactoryInterface(ABC):
     @abstractmethod
-    def get_representative(self, interface : Type[ABC]) -> Union[Type[ABC], object]:
+    def get_representative(self, interface: Type[ABC]) -> Union[Type[ABC], object]:
         """Get Representative get a object correspondent to the interface
 
         Args:

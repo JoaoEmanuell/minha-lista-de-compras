@@ -6,13 +6,18 @@ from flask_sqlalchemy.model import Model
 
 from .database_interface import DatabaseInterface
 
+
 class SQLiteDatabaseInterface(DatabaseInterface):
     """Sql lite database interface"""
 
     @abstractmethod
-    def select(self, connection: SQLAlchemy=None, model: Model=None, \
-        fields: List[str]=[], where:Dict[str, Any]=None) -> \
-            Union[List[List[Dict[str, Any]]], list]:
+    def select(
+        self,
+        connection: SQLAlchemy = None,
+        model: Model = None,
+        fields: List[str] = [],
+        where: Dict[str, Any] = None,
+    ) -> Union[List[List[Dict[str, Any]]], list]:
         """Select [fields] in [model] [where]
 
         Args:
@@ -23,12 +28,17 @@ class SQLiteDatabaseInterface(DatabaseInterface):
 
         Returns:
             Union[List[Dict[str, Any]], list]: List with dict of records. Or empty list
-        """        
+        """
         raise NotImplementedError()
 
     @abstractmethod
-    def update_one(self, connection: SQLAlchemy=None, id: int=None, \
-        model: Model=None, data: Dict[str, Any]=None) -> bool:
+    def update_one(
+        self,
+        connection: SQLAlchemy = None,
+        id: int = None,
+        model: Model = None,
+        data: Dict[str, Any] = None,
+    ) -> bool:
         """Update [model] set [data] where [id = id]
 
         Args:
@@ -39,12 +49,16 @@ class SQLiteDatabaseInterface(DatabaseInterface):
 
         Returns:
             bool: True if successfully, else False
-        """        
+        """
         raise NotImplementedError()
 
     @abstractmethod
-    def insert_one(self, connection: SQLAlchemy=None, model: Model=None, \
-        data: Dict[str, Any]=None) -> bool:
+    def insert_one(
+        self,
+        connection: SQLAlchemy = None,
+        model: Model = None,
+        data: Dict[str, Any] = None,
+    ) -> bool:
         """insert into [model] values [data]
 
         Args:
@@ -54,12 +68,13 @@ class SQLiteDatabaseInterface(DatabaseInterface):
 
         Returns:
             bool: True if successfully, else False
-        """        
+        """
         raise NotImplementedError()
 
     @abstractmethod
-    def delete_one(self, connection: SQLAlchemy=None, id: int=None, \
-        model: Model=None) -> bool:
+    def delete_one(
+        self, connection: SQLAlchemy = None, id: int = None, model: Model = None
+    ) -> bool:
         """delete from [model] where [id = id]
 
         Args:
@@ -69,5 +84,5 @@ class SQLiteDatabaseInterface(DatabaseInterface):
 
         Returns:
             bool: True if successfully, else False
-        """        
+        """
         raise NotImplementedError()

@@ -3,16 +3,18 @@ from typing import Any
 try:
     from mlc_dir import sql_db as db
     from mlc_dir import login_manager
-except ImportError: # Used by tests
-    from .......mlc_dir import sql_db as db # type:ignore
+except ImportError:  # Used by tests
+    from .......mlc_dir import sql_db as db  # type:ignore
     from .......mlc_dir import login_manager
+
 
 @login_manager.user_loader
 def load_user(user_id: str) -> Any:
     return UserModel.query.get(user_id)
 
+
 class UserModel(db.Model):
-    __tablename__ = 'users'
+    __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True)
     password = db.Column(db.String)
