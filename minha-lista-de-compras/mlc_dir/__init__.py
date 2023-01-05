@@ -28,10 +28,13 @@ from .source import (
     DatabaseInterface,
     SQLiteDatabaseInterface,
 )
-from .routes import user
+from .routes import api, user
 
 with app.app_context():
     sql_db.create_all()
 
 # Blueprints
+
+
 app.register_blueprint(user, url_prefix="/user")
+app.register_blueprint(api, url_prefix='/api')
