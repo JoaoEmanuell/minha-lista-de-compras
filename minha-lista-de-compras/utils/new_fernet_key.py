@@ -2,4 +2,4 @@ from cryptography.fernet import Fernet
 
 key = Fernet.generate_key()
 
-print(key.decode('UTF-8'))
+print(key.decode("UTF-8"))
