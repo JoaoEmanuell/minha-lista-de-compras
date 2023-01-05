@@ -2,7 +2,7 @@ from sys import path
 
 path.append("..")
 
-from mlc.source import Factory, HashInterface
+from mlc.mlc_dir.source import Factory, HashInterface
 
 
 def test_answer():

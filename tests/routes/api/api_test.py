@@ -1,10 +1,11 @@
 from os import environ as env
-from json import dump
 
 from requests import get, post
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(
+    dotenv_path='./.env/'
+)
 
 
 def test_answer():
