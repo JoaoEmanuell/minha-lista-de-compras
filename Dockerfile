@@ -1,6 +1,6 @@
 FROM nikolaik/python-nodejs:python3.11-nodejs19-alpine
 
-RUN apk add --no-cache --upgrade bash
+RUN apk add --no-cache --upgrade bash gcc g++
 
 # Args and env
 

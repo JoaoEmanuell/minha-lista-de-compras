@@ -1,0 +1,1 @@
+../minha-lista-de-compras/config.py

@@ -1,89 +1,87 @@
-from pathlib import Path
-from os.path import join, exists
-
 from sys import path
-path.append('..')
 
-from mlc.source import UserModel, Factory, SQLiteDatabaseInterface
+path.append("..")
+
+from mlc.mlc_dir import UserModel, Factory, SQLiteDatabaseInterface, sql_db, app
+
 
 def test_answer():
-    absolute_path = Path().absolute()
-    path_to_db = join(absolute_path, 'database.db')
-    id = 1
+    ID = 1
 
-    sql_lite: SQLiteDatabaseInterface \
-        = Factory().get_representative(SQLiteDatabaseInterface) # Object
+    sql_lite: SQLiteDatabaseInterface = Factory().get_representative(
+        SQLiteDatabaseInterface
+    )  # Object
 
-    # Create connection
-    connection = sql_lite.create_connection(path_to_db)
-    assert exists(path_to_db)
+    sql_db.init_app(app)
+    with app.app_context():
+        sql_db.create_all()
+        # Insert
 
-    # Insert
+        ## Valid insert
+        data = {"username": "test", "password": "test"}
+        result = sql_lite.insert_one(sql_db, UserModel, data)
+        assert result == True
 
-    ## Valid insert
-    data = {'id': id, 'username': 'test', 'password': 'test'}
-    result = sql_lite.insert_one(UserModel, data, connection)
-    assert result == True
+        ## Invalid insert
+        data_invalid = {"username": "test"}
+        result = sql_lite.insert_one(sql_db, UserModel, data_invalid)
+        assert result == False
 
-    ## Invalid insert
-    data_invalid = {'username': 'test'}
-    result = sql_lite.insert_one(UserModel, data_invalid, connection)
-    assert result == False
+        # Update
 
-    # Update
+        ## Valid update
+        data = {"username": "test2", "password": "test2"}
+        result = sql_lite.update_one(sql_db, ID, UserModel, data)
+        assert result == True
 
-    ## Valid update
-    data = {'username': 'test2', 'password': 'test2'}
-    result = sql_lite.update_one(id, UserModel, data, connection)
-    assert result == True
+        ## Invalid update
+        data_invalid = {"user": "test"}
+        result = sql_lite.update_one(sql_db, ID, UserModel, data_invalid)
+        assert result == False
 
-    ## Invalid update
-    result = sql_lite.update_one(id, UserModel, data_invalid, connection)
-    assert result == False
+        # Select
+        ## Valid select
+        where = {"username": "test2"}
+        fields = "*"
+        result = sql_lite.select(sql_db, UserModel, fields, where)
+        assert result[0] == [{"id": 1, "username": "test2", "password": "test2"}]
 
-    # Select
-    ## Valid select
-    where = {'username': 'test2'}
-    fields = '*'
-    result = sql_lite.select(UserModel, connection, fields, where)
-    assert result == [{'id': 1, 'username': 'test2', 'password': 'test2'}]
+        ## Valid select with fields
+        fields = "username"
+        result = sql_lite.select(sql_db, UserModel, fields, where)
+        assert result == [[{"username": "test2"}]]
 
-    ## Valid select with fields
-    fields = 'username'
-    result = sql_lite.select(UserModel, connection, fields, where)
-    assert result == [{'username': 'test2'}]
+        ## Invalid select
+        where = {"username": "test"}
+        result = sql_lite.select(sql_db, UserModel, fields, where)
+        assert result == []
 
-    ## Invalid select
-    where = {'username': 'test'}
-    result = sql_lite.select(UserModel, connection, fields, where)
-    assert result == []
+        ## Sql injection
+        where = {"id": "105 OR 1=1"}
+        result = sql_lite.select(sql_db, UserModel, fields, where)
+        assert result == []
 
-    ## Sql injection
-    where = {'id': '105 OR 1=1'}
-    result = sql_lite.select(UserModel, connection, fields, where)
-    assert result == []
+        ## No where
+        result = sql_lite.select(sql_db, UserModel, fields)
+        assert result == [[{"username": "test2"}]]
 
-    ## No where
-    result = sql_lite.select(UserModel, connection, fields)
-    assert result == [{'id': 1, 'username': 'test2', 'password': 'test2'}]
+        ## No fields
+        result = sql_lite.select(sql_db, UserModel)
+        assert result == []
 
-    ## No fields
-    result = sql_lite.select(UserModel, connection)
-    assert result == []
+        ## No connection
+        result = sql_lite.select(model=UserModel)
+        assert result == []
 
-    ## No connection
-    result = sql_lite.select(UserModel)
-    assert result == []
+        ## No model
+        result = sql_lite.select()
+        assert result == []
 
-    ## No model
-    result = sql_lite.select()
-    assert result == []
+        # Delete
+        ## Valid delete
+        result = sql_lite.delete_one(sql_db, ID, UserModel)
+        assert result == True
 
-    # Delete
-    ## Valid delete
-    result = sql_lite.delete_one(id, UserModel, connection)
-    assert result == True
-    
-    ## Invalid delete
-    result = sql_lite.delete_one(model=UserModel, connection=connection)
-    assert result == False
+        ## Invalid delete
+        result = sql_lite.delete_one(sql_db, ID, UserModel)
+        assert result == False
