@@ -4,11 +4,13 @@ from abc import ABC
 from .interfaces import FactoryInterface
 
 from ..database import mongo, sql_lite
+from ..encrypt import Encrypt
+from ..hash import Hash
 
 
 class Factory(FactoryInterface):
     def __init__(self) -> None:
-        self.__representatives: Tuple[ABC] = (mongo, sql_lite)
+        self.__representatives: Tuple[ABC] = (mongo, sql_lite, Encrypt, Hash)
 
     def get_representative(self, interface: Type[ABC]) -> Union[Type[ABC], object]:
         for representative in self.__representatives:

@@ -5,4 +5,6 @@ from .database import (
     DatabaseInterface,
     SQLiteDatabaseInterface,
 )
-from .factory import Factory
+from .encrypt import Encrypt, EncryptInterface
+from .factory import Factory, FactoryInterface
+from .hash import Hash, HashInterface
