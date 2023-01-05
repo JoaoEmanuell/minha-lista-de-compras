@@ -1,9 +1,9 @@
 from sys import path
 
-path.append('..')
+path.append("..")
 
-from mlc.source import Factory, DatabaseInterface
-from mlc.source.factory.interfaces import FactoryInterface
+from mlc.mlc_dir.source import Factory, DatabaseInterface, FactoryInterface
+
 
 def test_answer():
     fac = Factory()

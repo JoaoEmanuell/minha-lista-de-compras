@@ -3,19 +3,20 @@ from os import environ as env
 
 from dotenv import load_dotenv
 
-path.append('..')
+path.append("..")
 
-load_dotenv()
+load_dotenv(dotenv_path="./.env")
 
-from mlc.source import Factory, EncryptInterface
+from mlc.mlc_dir.source import Factory, EncryptInterface
+
 
 def test_answer():
     fac = Factory()
-    encrypt_key = env['ENCRYPTION_KEY']
-    encrypt = fac.get_representative(EncryptInterface) # class
+    encrypt_key = env["ENCRYPTION_KEY"]
+    encrypt = fac.get_representative(EncryptInterface)  # class
     encrypt: EncryptInterface = encrypt(encrypt_key)
 
-    text_data = ['Hello World!']
+    text_data = ["Hello World!"]
     encrypt_text_data = encrypt.encrypt(text_data)
 
     assert type(encrypt_text_data) == list
